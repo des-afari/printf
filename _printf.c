@@ -1,51 +1,37 @@
-#include <stdarg.h>
 #include "main.h"
 
 /**
- *_printf - prints to output according to format
- *@format: character string
- *
- *Return: number of characters printed
+ * _printf - Receives the main string and all the necessary parameters to
+ * print a formated string
+ * @format: A string containing all the desired characters
+ * Return: A total count of the characters printed
  */
-
 int _printf(const char *format, ...)
 {
-	int i = 0, j = 0;
-	int (*f)(va_list);
-	va_list args;
+	int printed_chars;
+	conver_t f_list[] = {
+		{"c", print_char},
+		{"s", print_string},
+		{"%", print_percent},
+		{"d", print_integer},
+		{"i", print_integer},
+		{"b", print_binary},
+		{"r", print_reversed},
+		{"R", rot13},
+		{"u", unsigned_integer},
+		{"o", print_octal},
+		{"x", print_hex},
+		{"X", print_heX},
+		{NULL, NULL}
+	};
+	va_list arg_list;
 
-	va_start(args, format);
-	if (format == NULL || !format[i + 1])
+	if (format == NULL)
 		return (-1);
-	while (format[i])
-	{
-		if (format[i] == '%')
-		{
-			if (format[i + 1])
-			{
-				if (format[i + 1] != 'c' && format[i + 1] != 's'
-				&& format[i + 1] != '%' && format[i + 1] != 'd'
-				&& format[i + 1] != 'i')
-				{
-					j += _putchar(format[i]);
-					j += _putchar(format[i + 1]);
-					i++;
-				}
-				else
-				{
-					f = get_func(&format[i + 1]);
-					j += f(args);
-					i++;
-				}
-			}
-		}
-		else
-		{
-			_putchar(format[i]);
-			j++;
-		}
-		i++;
-	}
-	va_end(args);
-	return (j);
+
+	va_start(arg_list, format);
+	/*Calling parser function*/
+	printed_chars = parser(format, f_list, arg_list);
+	va_end(arg_list);
+	return (printed_chars);
 }

@@ -1,30 +1,45 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef PRINT_F
+#define PRINT_F
 
-#include <stdarg.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <limits.h>
-#include <string.h>
+#include <stdarg.h>
 
 /**
- * struct func_type - type structure
- * @t: pointer to the argument
- * @f: pointer-function associated with the argument
- */
-typedef struct func_type
+* struct convert - defines a structure for symbols and functions
+* @sym: The operator
+* @f: The function associated
+*/
+struct convert
 {
-	char *t;
+	char *sym;
 	int (*f)(va_list);
-} func_t;
+};
+typedef struct convert conver_t;
 
-int (*get_func(const char *format))(va_list);
-int _putchar(char c);
+/*Main functions*/
+int parser(const char *format, conver_t f_list[], va_list arg_list);
 int _printf(const char *format, ...);
-int print_str(va_list args);
-int print_char(va_list args);
-int print_pct(va_list args);
-int print_dec(va_list args);
+int _write_char(char);
+int print_char(va_list);
+int print_string(va_list);
+int print_percent(va_list);
+int print_integer(va_list);
+int print_number(va_list);
+int print_binary(va_list);
+int print_reversed(va_list arg);
+int rot13(va_list);
+int unsigned_integer(va_list);
+int print_octal(va_list list);
+int print_hex(va_list list);
+int print_heX(va_list list);
+
+/*Helper functions*/
+unsigned int base_len(unsigned int, int);
+char *rev_string(char *);
+void write_base(char *str);
+char *_memcpy(char *dest, char *src, unsigned int n);
+int print_unsgined_number(unsigned int);
+
 
 #endif
